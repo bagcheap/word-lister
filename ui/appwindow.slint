@@ -5,6 +5,7 @@ import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
 export component AppWindow inherits Window {
     background: #fdd;
     in property <string> results: ""; // private property
+    in-out property <bool> opencurtain;
     callback divide-income(string);
     // width: 200px;
     // height: 200px;
@@ -34,7 +35,10 @@ export component AppWindow inherits Window {
                 primary: true;
 
                 height: 35px;
-                clicked => {divide-income(inputText.text)}
+                clicked => {
+                    opencurtain = !opencurtain;
+                    divide-income(inputText.text)
+                }
             }    
         }
         Row {
@@ -47,6 +51,35 @@ export component AppWindow inherits Window {
                     font-weight: 500;
                     text: root.results;
                 }
+                //Left rectangle
+                Rectangle {
+                    background: #333;
+                    x: 0;
+                    width: opencurtain ? 0px : parent.width/2;
+                    height: parent.height;
+                    animate width {
+                        duration: 250ms;
+                        easing: ease-in;
+                         
+                    }
+                }
+                //right rectangle
+                Rectangle {
+                    background: #333;
+                    x: opencurtain ? parent.width: parent.width/2; 
+                    width: opencurtain ? 0px : parent.width/2;
+                    height: parent.height;
+                    animate width {
+                        duration: 250ms;
+                        easing: ease-in;
+                    }
+                    animate x {
+                        duration: 250ms;
+                        easing: ease-in;
+                    }
+                }
+
+
             }
         }
     }
